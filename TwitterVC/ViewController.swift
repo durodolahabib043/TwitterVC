@@ -11,32 +11,81 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    //indentifer
     let cellIdentifier = "cellIdentifier"
+    let customCellIdentifier = "customCellIdentifier"
+    let headerIdentifier = "headerIdentifier"
+    let footerIdentifier = "footerIdentifier"
+
+    //uib
+    let footerUIB = "TwitterFooterHeader"
+    let cellUIB = "TwitterCell"
+    let headerUIB = "TwitterHeaderFooter"
+
+    var userViewModel: UserViewModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         // Do any additional setup after loading the view.
+        setupTableView()
     }
+
+    func setupTableView(){ //TwitterFooterHeader
+        tableView.register(UINib(nibName: headerUIB, bundle: nil), forHeaderFooterViewReuseIdentifier: headerIdentifier) // header r
+        tableView.register(UINib(nibName: cellUIB, bundle: nil), forCellReuseIdentifier: customCellIdentifier) // cell
+        tableView.register(UINib(nibName: footerUIB, bundle: nil), forHeaderFooterViewReuseIdentifier: footerIdentifier) // footer
+    }
+
+
 
 }
 
 extension ViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        2
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-          var cell : UITableViewCell!
-          cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
-          if cell == nil {
-              cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-          }
-        cell.textLabel?.text = "sample"
+        // var cell : UITableViewCell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: customCellIdentifier, for: indexPath) as! TwitterCell
+        userViewModel = UserViewModel()
 
-         return cell
+        guard let user = userViewModel else {
+            return cell
+        }
+        cell.selectionStyle = .none
+
+        cell.nameLabel.text = user.getUser()[indexPath.row].name
+        cell.handleLabel.text = user.getUser()[indexPath.row].handle
+
+        return cell
     }
 
+    // header
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Dequeue with the reuse identifier
+        let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier) as! TwitterHeaderFooter
+        header.headerLabel.text = "Header"
+        return header
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 70
+    }
+
+    // footer
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footer = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: footerIdentifier) as! TwitterFooterHeader
+        // let header = cell as! TableSectionHeader
+        footer.footerLabel.text = "Footer"
+        return footer
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 70 
+    }
 
 }
 
