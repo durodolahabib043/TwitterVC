@@ -36,8 +36,8 @@ class ViewController: UIViewController {
         tableView.register(UINib(nibName: headerUIB, bundle: nil), forHeaderFooterViewReuseIdentifier: headerIdentifier) // header r
         tableView.register(UINib(nibName: cellUIB, bundle: nil), forCellReuseIdentifier: customCellIdentifier) // cell
         tableView.register(UINib(nibName: footerUIB, bundle: nil), forHeaderFooterViewReuseIdentifier: footerIdentifier) // footer
-    }
 
+    }
 
 
 }
@@ -59,6 +59,8 @@ extension ViewController : UITableViewDataSource , UITableViewDelegate {
 
         cell.nameLabel.text = user.getUser()[indexPath.row].name
         cell.handleLabel.text = user.getUser()[indexPath.row].handle
+        cell.descriptionLabel.text = user.getUser()[indexPath.row].description
+        print(user.getUser()[indexPath.row].description)
 
         return cell
     }
@@ -67,7 +69,7 @@ extension ViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         // Dequeue with the reuse identifier
         let header = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier) as! TwitterHeaderFooter
-        header.headerLabel.text = "Header"
+        header.headerLabel.text = "WHO TO FOLLOW"
         return header
     }
 
@@ -79,12 +81,25 @@ extension ViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = self.tableView.dequeueReusableHeaderFooterView(withIdentifier: footerIdentifier) as! TwitterFooterHeader
         // let header = cell as! TableSectionHeader
-        footer.footerLabel.text = "Footer"
+        footer.footerLabel.text = "Show me more"
         return footer
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 70 
+    }
+
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        return UITableView.automaticDimension
+
+    }
+
+     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        return UITableView.automaticDimension
+
     }
 
 }
