@@ -26,10 +26,42 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationbar()
         tableView.delegate = self
         tableView.dataSource = self
         // Do any additional setup after loading the view.
         setupTableView()
+    }
+    func setupNavigationbar()  {
+        let titleViewImage = UIImageView(image: UIImage(named: "title_icon"))
+
+        titleViewImage.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        titleViewImage.contentMode = .scaleAspectFit
+        
+        navigationItem.titleView = titleViewImage
+        setupLeftNavItem()
+        setupRightNavItems()
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+    }
+
+    private func setupLeftNavItem() {
+        let followButton = UIButton(type: .system)
+        followButton.setImage(#imageLiteral(resourceName: "follow").withRenderingMode(.alwaysOriginal), for: .normal)
+        followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
+    }
+
+    private func setupRightNavItems() {
+        let searchButton = UIButton(type: .system)
+        searchButton.setImage(#imageLiteral(resourceName: "search").withRenderingMode(.alwaysOriginal), for: .normal)
+        searchButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+
+        let composeButton = UIButton(type: .system)
+        composeButton.setImage(#imageLiteral(resourceName: "compose").withRenderingMode(.alwaysOriginal), for: .normal)
+        composeButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: composeButton), UIBarButtonItem(customView: searchButton)]
     }
 
     func setupTableView(){ //TwitterFooterHeader
